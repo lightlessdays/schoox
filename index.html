@@ -3,34 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>PepsiCo x Schoox AI Assistant</title>
+    <title>Iframe | Max-Width 630px · Full Height · No Padding</title>
     <style>
+        /* RESET: remove all margins/paddings */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        /* html & body take full viewport, no scrollbars on wrapper */
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            background: #000;
+            background: #ffffff;   /* clean neutral bg, will be covered by iframe anyway */
         }
-        iframe {
-            display: block;
+
+        /* flex container to center iframe horizontally (when screen > 630px) */
+        /* when screen <= 630px, the container has no padding and iframe stretches full width */
+        .iframe-container {
+            display: flex;
+            justify-content: center;     /* centers the iframe when extra space available */
+            align-items: stretch;       /* ensures full height cross-axis */
             width: 100%;
-            height: 100%;
-            border: none;
+            height: 100%;               /* match viewport height exactly */
+            background: #f5f7fb;        /* subtle fallback, only visible if iframe has gaps */
         }
+
+        /* 
+           The iframe itself:
+           - height always 100% of parent container.
+           - width: 100% on screens <= 630px (no padding, edge to edge)
+           - max-width: 630px on larger screens → remains centered and constrained.
+        */
+        .full-height-iframe {
+            display: block;
+            height: 100%;               /* always fill available vertical space */
+            width: 100%;
+            max-width: 630px;           /* constraint: never exceeds 630px */
+            border: none;
+            background: #000;           /* black while loading */
+        }
+
+        /* 
+           No media query needed for width handling:
+           - default width = 100% + max-width:630px.
+           - When viewport < 630px: max-width has no effect (630px > viewport),
+             so width stays 100% and there is zero horizontal padding because parent container 
+             has no padding, and iframe fills entire container width.
+           - When viewport > 630px: iframe width becomes 630px (due to max-width), centered
+             via parent's justify-content:center. No left/right padding anywhere.
+        */
+
+        /* ensure no hidden margins on any edge */
+        .iframe-container,
+        .full-height-iframe {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Optional: iframe scroll behavior — internal page will manage its own scroll */
+        /* No extra wrapper spacing. Absolutely minimal. */
     </style>
 </head>
 <body>
-    <iframe 
+<div class="iframe-container">
+    <iframe
+        class="full-height-iframe"
         src="https://schoox-gyaan-mitra.lovable.app"
-        title="Schoox Gyaan Mitra"
-        sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-downloads"
+        title="Schoox Gyaan Mitra Learning Assistant"
+        sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-downloads allow-orientation-lock allow-popups-to-escape-sandbox"
         referrerpolicy="strict-origin-when-cross-origin"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        loading="eager"
     ></iframe>
+</div>
 </body>
 </html>
