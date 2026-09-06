@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Interviewer Evaluation Matrix — HR Recruiting Specialist, MSIL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1F3A5F;
+    --navy-deep:#152840;
+    --steel:#4C7093;
+    --light:#A9C0D6;
+    --paper:#FAFBFC;
+    --ink:#1B222C;
+    --muted:#5B6672;
+    --line:#E2E7ED;
+    --amber:#9A6B00;
+    --amber-bg:#FCF3DD;
+    --green:#1C6E43;
+    --green-bg:#E3F3E9;
+    --red:#A6332B;
+    --red-bg:#FBE7E5;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{ background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.45; }
+  header{ position:relative; overflow:hidden; background:linear-gradient(135deg,var(--navy-deep),var(--navy) 70%); color:#fff; padding:34px 6vw 30px; }
+  header::after{ content:""; position:absolute; inset:0; background:linear-gradient(115deg,transparent 0%,transparent 40%,rgba(255,255,255,.08) 50%,transparent 60%,transparent 100%); background-size:220% 220%; animation:shine 7s ease-in-out infinite; pointer-events:none; }
+  @keyframes shine{ 0%{background-position:120% 0;} 50%{background-position:-20% 0;} 100%{background-position:120% 0;} }
+  header .eyebrow{ font-size:12.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--light); font-weight:600; margin-bottom:8px; }
+  header h1{ font-family:'Lora',serif; font-weight:600; font-size:clamp(22px,5vw,34px); margin:0 0 6px; }
+  header p{ margin:0; color:#D7E2EE; font-size:clamp(13px,2vw,14.5px); max-width:720px; }
+
+  main{ max-width:1240px; margin:0 auto; padding:34px 6vw 60px; display:grid; grid-template-columns:1fr 1fr; gap:34px; }
+  @media (max-width:980px){ main{grid-template-columns:1fr; gap:22px; padding:24px 5vw 48px;} }
+  @media (max-width:520px){ main{padding:18px 4vw 40px; gap:16px;} }
+  .full{ grid-column:1 / -1; }
+
+  .panel{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:24px 26px 20px; transition:box-shadow .2s ease, transform .2s ease; }
+  .panel:hover{ box-shadow:0 10px 28px -18px rgba(31,58,95,.35); }
+  @media (max-width:520px){ .panel{padding:18px 16px 16px; border-radius:8px;} }
+  .panel h2{ font-family:'Lora',serif; font-size:19px; margin:0 0 4px; color:var(--navy-deep); }
+  @media (max-width:520px){ .panel h2{font-size:17px;} }
+  .panel .sub{ font-size:13px; color:var(--muted); margin:0 0 20px; }
+
+  .candidate-row{ display:flex; gap:10px; align-items:center; margin-bottom:22px; flex-wrap:wrap; }
+  input[type=text]{ font-family:'Inter',sans-serif; font-size:14px; padding:8px 10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); min-height:38px; }
+  button{ font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px; padding:9px 16px; min-height:38px; border-radius:6px; border:1px solid var(--navy); background:var(--navy); color:#fff; cursor:pointer; transition:transform .12s ease, opacity .15s ease, box-shadow .15s ease; }
+  button.secondary{ background:#fff; color:var(--navy); }
+  button:hover{ opacity:.9; transform:translateY(-1px); box-shadow:0 6px 14px -8px rgba(31,58,95,.5); }
+  button:active{ transform:translateY(0); }
+  @media (max-width:520px){ .candidate-row{gap:8px;} .candidate-row input[type=text]{flex:1 1 100%;} .candidate-row button{flex:1 1 auto;} }
+
+  .dim{ padding:14px 0; border-top:1px solid var(--line); }
+  .dim:first-of-type{ border-top:none; }
+  .dim-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+  .dim-head .name{ font-weight:600; font-size:14.5px; }
+  @media (max-width:400px){ .dim-head .name{font-size:13.5px;} }
+  .dim-head .weight{ font-size:12px; color:var(--steel); font-weight:600; background:#EEF3F8; padding:2px 8px; border-radius:20px; }
+  .slider-row{ display:flex; align-items:center; gap:12px; }
+  input[type=range]{ flex:1; accent-color:var(--navy); height:6px; touch-action:pan-y; }
+  @media (max-width:520px){ input[type=range]{ height:8px; } }
+  .score-badge{ min-width:30px; text-align:center; font-weight:700; font-size:15px; color:var(--navy-deep); font-family:'Lora',serif; transition:transform .15s ease; }
+  .score-badge.bump{ transform:scale(1.35); }
+
+  /* Avatars — visual candidate identity */
+  .avatar{ width:26px; height:26px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:#fff; font-family:'Lora',serif; font-weight:700; font-size:10.5px; flex:none; letter-spacing:.02em; box-shadow:0 0 0 2px #fff, 0 0 0 3px rgba(0,0,0,.06); }
+  .avatar.sm{ width:20px; height:20px; font-size:9px; }
+  .avatar.lg{ width:40px; height:40px; font-size:14px; }
+
+  .result-hero{ text-align:center; padding:10px 0 8px; }
+  .result-hero .label{ font-size:12.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); font-weight:600; }
+  .result-hero .value{ font-family:'Lora',serif; font-size:clamp(38px,9vw,52px); font-weight:700; color:var(--navy-deep); margin:2px 0 2px; transition:color .2s ease; }
+  .result-hero .of5{ font-size:16px; color:var(--muted); font-weight:500; }
+  .gauge-track{ width:100%; height:10px; background:#EDF1F5; border-radius:6px; overflow:hidden; margin:14px 0 6px; position:relative; }
+  .gauge-fill{ height:100%; background:linear-gradient(90deg,var(--steel),var(--navy)); border-radius:6px; transition:width .35s cubic-bezier(.34,1.56,.64,1); position:relative; }
+  .gauge-fill::after{ content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent); background-size:60px 100%; animation:sweep 2.2s linear infinite; }
+  @keyframes sweep{ 0%{background-position:-80px 0;} 100%{background-position:220px 0;} }
+  .gauge-ticks{ display:flex; justify-content:space-between; font-size:10.5px; color:var(--muted); margin-bottom:18px; }
+
+  .decision-banner{ border-radius:8px; padding:14px 16px; font-size:14px; font-weight:600; display:flex; align-items:center; gap:10px; margin-bottom:6px; animation:bannerIn .3s ease; }
+  @keyframes bannerIn{ from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:translateY(0);} }
+  .decision-banner .dot{ width:10px;height:10px;border-radius:50%;flex:none; }
+  .decision-banner.hold{ background:var(--red-bg); color:var(--red); }
+  .decision-banner.hold .dot{ background:var(--red); }
+  .decision-banner.review{ background:var(--amber-bg); color:var(--amber); }
+  .decision-banner.review .dot{ background:var(--amber); animation:pulse 1.4s ease-in-out infinite; }
+  .decision-banner.fasttrack{ background:var(--green-bg); color:var(--green); }
+  .decision-banner.fasttrack .dot{ background:var(--green); box-shadow:0 0 0 rgba(28,110,67,.5); animation:pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1;} 50%{box-shadow:0 0 0 4px transparent;opacity:.55;} }
+  @media (max-width:520px){ .decision-banner{font-size:13px; padding:12px 14px;} }
+
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; margin-top:6px; }
+  th,td{ text-align:left; padding:9px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th{ color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  td.num{ text-align:right; font-variant-numeric:tabular-nums; }
+  td.center{ text-align:center; }
+  .status-chip{ font-size:11px; font-weight:700; padding:2px 9px; border-radius:20px; white-space:nowrap; }
+  .status-chip.hold{ background:var(--red-bg); color:var(--red); }
+  .status-chip.review{ background:var(--amber-bg); color:var(--amber); }
+  .status-chip.fasttrack{ background:var(--green-bg); color:var(--green); }
+  .empty-note{ font-size:13px; color:var(--muted); padding:10px 0 20px; }
+  .rm{ background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;padding:2px 8px;border-radius:5px;transition:background .15s ease,color .15s ease; }
+  .rm:hover{ color:var(--red); background:var(--red-bg); }
+  .cname{ display:flex; align-items:center; gap:8px; font-weight:600; }
+  .winner-cell{ background:#EAF3EC; font-weight:700; color:var(--green); border-radius:5px; animation:winnerPop .3s ease; }
+  @keyframes winnerPop{ from{transform:scale(.85); opacity:.4;} to{transform:scale(1); opacity:1;} }
+  .crown{ font-size:14px; margin-left:4px; display:inline-block; animation:bob 1.8s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{transform:translateY(0) rotate(-4deg);} 50%{transform:translateY(-2px) rotate(4deg);} }
+  .medal{ font-size:14px; margin-right:2px; }
+  @media (max-width:520px){ table{font-size:12.5px;} th,td{padding:8px 6px;} }
+
+  /* Leaderboard */
+  .lb-row{ display:grid; grid-template-columns:auto 120px 1fr 44px; align-items:center; gap:12px; padding:9px 0; }
+  .lb-name{ font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lb-track{ height:16px; background:#EDF1F5; border-radius:5px; overflow:hidden; }
+  .lb-fill{ height:100%; border-radius:5px; display:flex; align-items:center; transition:width .5s cubic-bezier(.34,1.56,.64,1); }
+  .lb-val{ font-size:13.5px; font-weight:700; text-align:right; font-variant-numeric:tabular-nums; }
+  @media (max-width:520px){ .lb-row{grid-template-columns:auto 1fr 40px; row-gap:6px;} .lb-track{grid-column:1/-1; order:3;} }
+
+  /* Radar */
+  .radar-wrap{ display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start; justify-content:center; width:100%; }
+  #radarSvg{ width:100%; max-width:520px; height:auto; }
+  .legend{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:10px; font-size:12.5px; }
+  .legend-item{ display:flex; align-items:center; gap:6px; }
+  .legend-swatch{ width:11px; height:11px; border-radius:3px; flex:none; }
+  .legend-swatch.dashed{ border:2px dashed; background:none; }
+
+  footer{ text-align:center; font-size:12px; color:var(--muted); padding:0 6vw 40px; }
+  @media (max-width:520px){ footer{font-size:11px; line-height:1.6;} }
+
+  /* Confetti burst on fast-track */
+  .confetti-piece{ position:fixed; top:-10px; width:8px; height:8px; opacity:0; pointer-events:none; z-index:999; animation:confettiFall 1.6s ease-in forwards; }
+  @keyframes confettiFall{ 0%{opacity:1; transform:translateY(0) rotate(0deg);} 100%{opacity:0; transform:translateY(90vh) rotate(540deg);} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Maruti Suzuki India Limited &middot; Staffing &amp; Employer Branding</div>
+  <h1>Interviewer Evaluation Matrix</h1>
+  <p>Live panel scoring for the HR Recruiting Specialist interview &middot; Stage 5. Weights and thresholds match Table 7.4 exactly.</p>
+</header>
+
+<main>
+  <div class="panel">
+    <h2>Score a candidate</h2>
+    <p class="sub">Set each slider to the panel's agreed rating (1–5). Unsaved scores show as a dashed outline on the radar below.</p>
+
+    <div class="candidate-row">
+      <input type="text" id="candName" placeholder="Candidate name" value="Candidate A" style="flex:1;min-width:140px;">
+      <button id="saveBtn">Save to comparison</button>
+      <button class="secondary" id="resetBtn">Reset sliders</button>
+    </div>
+
+    <div id="dims"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Weighted result, live candidate</h2>
+    <p class="sub">Updates instantly as you move the sliders.</p>
+    <div class="result-hero">
+      <div class="label">Weighted total</div>
+      <div class="value"><span id="totalVal">0.00</span><span class="of5"> / 5.00</span></div>
+    </div>
+    <div class="gauge-track"><div class="gauge-fill" id="gaugeFill" style="width:0%"></div></div>
+    <div class="gauge-ticks"><span>0</span><span>1.25</span><span>2.5</span><span>3.75</span><span>5.0</span></div>
+    <div class="decision-banner hold" id="decisionBanner">
+      <span class="dot"></span>
+      <span id="decisionText">Below 3.00 — does not progress</span>
+    </div>
+  </div>
+
+  <div class="panel full">
+    <h2>Candidate leaderboard</h2>
+    <p class="sub">Saved candidates ranked by weighted total &middot; crown marks the leader.</p>
+    <div id="leaderboard"></div>
+    <div class="empty-note" id="lbEmpty">No candidates saved yet. Score someone on the left, then click "Save to comparison."</div>
+  </div>
+
+  <div class="panel full">
+    <h2>Strengths and weaknesses, by dimension</h2>
+    <p class="sub">Raw scores (1–5) per dimension &middot; the starred cell wins that competency, not always the overall leader.</p>
+    <div style="overflow-x:auto;">
+      <table id="dimTable"></table>
+    </div>
+  </div>
+
+  <div class="panel full">
+    <h2>Competency profile, radar comparison</h2>
+    <p class="sub">Shape, not just score &mdash; two candidates can tie on total with very different profiles.</p>
+    <div class="radar-wrap">
+      <svg id="radarSvg" width="520" height="420" viewBox="0 0 520 420" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="panel full">
+    <h2>Comparison table</h2>
+    <div style="overflow-x:auto;">
+      <table id="compTable">
+        <thead><tr><th>Candidate</th><th style="text-align:right">Weighted total</th><th>Outcome</th><th></th></tr></thead>
+        <tbody id="compBody"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer>Weights &middot; Comm. 15% · Initiative 15% · Collab. 15% · Value Alignment 20% · Problem Solving &amp; Data 20% · Stakeholder Mgmt. 15%. &nbsp; Rule &middot; &lt;3.00 does not progress · 3.00–3.75 needs panel review + Head of TA sign-off · &gt;3.75 fast-tracked to offer.</footer>
+
+<script>
+const dimensions = [
+  {key:"comm", name:"Communication", short:"Comm.", weight:0.15},
+  {key:"init", name:"Initiative", short:"Initiative", weight:0.15},
+  {key:"collab", name:"Collaboration", short:"Collab.", weight:0.15},
+  {key:"value", name:"Value Alignment", short:"Value", weight:0.20},
+  {key:"prob", name:"Problem Solving and Data Orientation", short:"Problem Solv.", weight:0.20},
+  {key:"stake", name:"Stakeholder Management", short:"Stakeholder", weight:0.15},
+];
+
+const PALETTE = ["#1F3A5F", "#C1562F", "#1F7A6C", "#7A4FB5", "#B98900", "#3D6EA6", "#8C3B4D"];
+
+let scores = {};
+dimensions.forEach(d => scores[d.key] = 3);
+let candidates = []; // {name, total, scores, color}
+
+function initials(name){
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+  return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+}
+function avatarHTML(c, size){
+  const cls = size ? ' ' + size : '';
+  return `<span class="avatar${cls}" style="background:${c.color}">${initials(c.name)}</span>`;
+}
+function fireConfetti(){
+  const colors = ['#1C6E43','#3D6EA6','#B98900','#C1562F','#7A4FB5'];
+  for (let i = 0; i < 26; i++){
+    const p = document.createElement('span');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.background = colors[i % colors.length];
+    p.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+    p.style.animationDelay = (Math.random()*0.3) + 's';
+    p.style.animationDuration = (1.2 + Math.random()*0.8) + 's';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2200);
+  }
+}
+
+const dimsEl = document.getElementById('dims');
+dimensions.forEach(d => {
+  const wrap = document.createElement('div');
+  wrap.className = 'dim';
+  wrap.innerHTML = `
+    <div class="dim-head">
+      <span class="name">${d.name}</span>
+      <span class="weight">${Math.round(d.weight*100)}%</span>
+    </div>
+    <div class="slider-row">
+      <input type="range" min="1" max="5" step="1" value="3" data-key="${d.key}">
+      <span class="score-badge" id="badge-${d.key}">3</span>
+    </div>`;
+  dimsEl.appendChild(wrap);
+});
+
+function computeTotal(s){
+  let t = 0;
+  dimensions.forEach(d => t += s[d.key] * d.weight);
+  return t;
+}
+
+function decisionInfo(total){
+  if (total < 3.0) return {cls:'hold', label:'Below 3.00 — does not progress', chip:'Does not progress', color:'#A6332B'};
+  if (total <= 3.75) return {cls:'review', label:'3.00 to 3.75 — panel discussion and second opinion required', chip:'Panel review', color:'#9A6B00'};
+  return {cls:'fasttrack', label:'Above 3.75 — fast-tracked to offer stage', chip:'Fast-track', color:'#1C6E43'};
+}
+
+function refreshLive(){
+  const total = computeTotal(scores);
+  document.getElementById('totalVal').textContent = total.toFixed(2);
+  document.getElementById('gaugeFill').style.width = (total/5*100) + '%';
+  const info = decisionInfo(total);
+  const banner = document.getElementById('decisionBanner');
+  banner.className = 'decision-banner ' + info.cls;
+  document.getElementById('decisionText').textContent = info.label;
+  renderRadar();
+}
+
+document.querySelectorAll('input[type=range]').forEach(slider => {
+  slider.addEventListener('input', e => {
+    const key = e.target.dataset.key;
+    scores[key] = Number(e.target.value);
+    const badge = document.getElementById('badge-' + key);
+    badge.textContent = e.target.value;
+    badge.classList.remove('bump');
+    void badge.offsetWidth;
+    badge.classList.add('bump');
+    clearTimeout(badge._bumpTimer);
+    badge._bumpTimer = setTimeout(() => badge.classList.remove('bump'), 160);
+    refreshLive();
+  });
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  dimensions.forEach(d => scores[d.key] = 3);
+  document.querySelectorAll('input[type=range]').forEach(s => { s.value = 3; document.getElementById('badge-' + s.dataset.key).textContent = 3; });
+  refreshLive();
+});
+
+function renderLeaderboard(){
+  const wrap = document.getElementById('leaderboard');
+  const empty = document.getElementById('lbEmpty');
+  wrap.innerHTML = '';
+  if (candidates.length === 0){ empty.style.display='block'; return; }
+  empty.style.display='none';
+  const sorted = [...candidates].sort((a,b) => b.total - a.total);
+  const top = sorted[0].total;
+  const medals = ['&#129351;','&#129352;','&#129353;'];
+  sorted.forEach((c, i) => {
+    const info = decisionInfo(c.total);
+    const row = document.createElement('div');
+    row.className = 'lb-row';
+    row.innerHTML = `
+      ${avatarHTML(c)}
+      <div class="lb-name">${i < 3 ? '<span class="medal">'+medals[i]+'</span>' : ''}${c.name}${c.total===top ? '<span class="crown" title="Top scorer">&#128081;</span>' : ''}</div>
+      <div class="lb-track"><div class="lb-fill" style="width:${(c.total/5*100)}%; background:${info.color}"></div></div>
+      <div class="lb-val">${c.total.toFixed(2)}</div>`;
+    wrap.appendChild(row);
+  });
+}
+
+function renderDimTable(){
+  const table = document.getElementById('dimTable');
+  if (candidates.length === 0){ table.innerHTML = '<tr><td style="color:var(--muted);font-size:13px;border:none;padding:6px 0;">Save at least one candidate to compare dimension by dimension.</td></tr>'; return; }
+  let head = '<thead><tr><th>Dimension</th>' + candidates.map(c => `<th>${avatarHTML(c,'sm')} <span style="margin-left:4px;">${c.name}</span></th>`).join('') + '</tr></thead>';
+  let body = '<tbody>';
+  dimensions.forEach(d => {
+    const vals = candidates.map(c => c.scores[d.key]);
+    const max = Math.max(...vals);
+    body += `<tr><td>${d.name}</td>` + candidates.map(c => {
+      const isWinner = c.scores[d.key] === max && max > 0;
+      return `<td class="center ${isWinner ? 'winner-cell' : ''}">${c.scores[d.key]}${isWinner ? ' &#9733;' : ''}</td>`;
+    }).join('') + '</tr>';
+  });
+  body += '</tbody>';
+  table.innerHTML = head + body;
+}
+
+function renderTable(){
+  const body = document.getElementById('compBody');
+  body.innerHTML = '';
+  if (candidates.length === 0){ return; }
+  const sorted = [...candidates].sort((a,b) => b.total - a.total);
+  sorted.forEach((c) => {
+    const info = decisionInfo(c.total);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="cname">${avatarHTML(c,'sm')}${c.name}</td><td class="num">${c.total.toFixed(2)}</td><td><span class="status-chip ${info.cls}">${info.chip}</span></td><td><button class="rm" title="Remove">&times;</button></td>`;
+    tr.querySelector('.rm').addEventListener('click', () => {
+      candidates = candidates.filter(x => x !== c);
+      renderAll();
+    });
+    body.appendChild(tr);
+  });
+}
+
+function polarPoint(cx, cy, R, i, n, valueFrac){
+  const angle = -Math.PI/2 + i * (2*Math.PI/n);
+  const r = valueFrac * R;
+  return [cx + r*Math.cos(angle), cy + r*Math.sin(angle)];
+}
+
+function renderRadar(){
+  const svg = document.getElementById('radarSvg');
+  const cx = 260, cy = 200, R = 122, n = dimensions.length;
+  let parts = [];
+
+  // grid rings
+  for (let lvl = 1; lvl <= 5; lvl++){
+    const pts = dimensions.map((d,i) => polarPoint(cx,cy,R,i,n, lvl/5).join(',')).join(' ');
+    parts.push(`<polygon points="${pts}" fill="none" stroke="#E2E7ED" stroke-width="1"/>`);
+  }
+  // axis lines + labels
+  dimensions.forEach((d,i) => {
+    const [x,y] = polarPoint(cx,cy,R,i,n,1);
+    parts.push(`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E2E7ED" stroke-width="1"/>`);
+    const [lx,ly] = polarPoint(cx,cy,R+30,i,n,1);
+    let anchor = "middle";
+    if (lx < cx - 5) anchor = "end"; else if (lx > cx + 5) anchor = "start";
+    parts.push(`<text x="${lx}" y="${ly}" font-size="11" font-family="Inter,sans-serif" fill="#5B6672" text-anchor="${anchor}" dominant-baseline="middle">${d.short}</text>`);
+  });
+
+  // live (unsaved) candidate, dashed
+  const livePts = dimensions.map((d,i) => polarPoint(cx,cy,R,i,n, scores[d.key]/5).join(',')).join(' ');
+  parts.push(`<polygon points="${livePts}" fill="none" stroke="#8C93A0" stroke-width="2" stroke-dasharray="5,4" />`);
+
+  // saved candidates
+  candidates.forEach(c => {
+    const pts = dimensions.map((d,i) => polarPoint(cx,cy,R,i,n, c.scores[d.key]/5).join(',')).join(' ');
+    parts.push(`<polygon points="${pts}" fill="${c.color}" fill-opacity="0.10" stroke="${c.color}" stroke-width="2.2" />`);
+    dimensions.forEach((d,i) => {
+      const [x,y] = polarPoint(cx,cy,R,i,n, c.scores[d.key]/5);
+      parts.push(`<circle cx="${x}" cy="${y}" r="3.2" fill="${c.color}" />`);
+    });
+  });
+
+  svg.innerHTML = parts.join('');
+
+  // legend
+  const legend = document.getElementById('legend');
+  let lg = `<div class="legend-item"><span class="legend-swatch dashed" style="border-color:#8C93A0;"></span>Live (unsaved)</div>`;
+  candidates.forEach(c => {
+    lg += `<div class="legend-item">${avatarHTML(c,'sm')}${c.name}</div>`;
+  });
+  legend.innerHTML = lg;
+}
+
+function renderAll(){
+  renderLeaderboard();
+  renderDimTable();
+  renderTable();
+  renderRadar();
+}
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  const name = document.getElementById('candName').value.trim() || ('Candidate ' + (candidates.length+1));
+  const total = computeTotal(scores);
+  const color = PALETTE[candidates.length % PALETTE.length];
+  candidates.push({name, total, scores: {...scores}, color});
+  renderAll();
+  if (decisionInfo(total).cls === 'fasttrack') fireConfetti();
+  const next = String.fromCharCode(65 + candidates.length);
+  document.getElementById('candName').value = 'Candidate ' + next;
+});
+
+refreshLive();
+renderAll();
+</script>
+</body>
+</html>
